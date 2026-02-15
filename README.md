@@ -88,6 +88,28 @@ cd nexus_p1
    npm run dev
    ```
 
+## 🌐 Vercel Deployment
+
+This project is optimized for deployment on **Vercel** as a full-stack monorepo.
+
+### Deployment Steps
+1. Push your code to a GitHub repository.
+2. Import the project in Vercel.
+3. In **Project Settings**:
+   - **Framework Preset**: Other
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `Frontend/dist`
+4. Add the following **Environment Variables**:
+   - `MONGO_URI`
+   - `RAZORPAY_KEY_ID`
+   - `RAZORPAY_KEY_SECRET`
+   - `EMAIL_ADDRESS`
+   - `EMAIL_PASSWORD`
+   - `VERCEL=true` (Required)
+
+### ⚠️ Note on Cron Jobs
+The built-in `node-cron` in `Backend/index.js` will not run on Vercel because serverless functions are execution-limited. To enable automatic overdue notices, use [Vercel Cron Jobs](https://vercel.com/docs/cron-jobs) to ping your `/api/overdue-books` endpoint daily.
+
 ## 📄 License
 This project is developed for Siksha 'O' Anusandhan. All rights reserved.
 

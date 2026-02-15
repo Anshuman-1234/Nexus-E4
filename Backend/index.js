@@ -878,16 +878,17 @@ app.get('/api/reports/:type', async (req, res) => {
 });
 
 // 404 Handler for API
-app.use('/api', (req, res) => {
-    console.log(`404 API - ${req.method} ${req.url}`);
-    res.status(404).json({ error: 'API route not found' });
-});
+// Only serve static files in non-Vercel environment
+if (process.env.VERCEL) {
+    app.get('/', (req, res) => res.send('API is running...'));
+} else {
+    app.use(express.static(path.join(__dirname, '../Frontend/dist')));
+    app.use((req, res) => {
+        res.sendFile(path.join(__dirname, '../Frontend/dist/index.html'));
+    });
+}
 
-app.use((req, res) => {
-    res.sendFile(path.join(__dirname, '../Frontend/dist/index.html'));
-});
-
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && !process.env.VERCEL) {
     app.listen(port, () => console.log(`Server running on port ${port}`));
 }
 
